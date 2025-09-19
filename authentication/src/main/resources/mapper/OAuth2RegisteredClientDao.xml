@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haiyinlong.snail.authentication.infrastructure.dao.OAuth2RegisteredClientDao">
+
+
+    <select id="selectByClientId"
+            resultType="com.haiyinlong.snail.authentication.infrastructure.dao.entity.OAuth2RegisteredClientEntity">
+        select *
+        from oauth2_registered_client
+        where client_id = #{clientId}
+    </select>
+</mapper>

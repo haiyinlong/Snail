@@ -1,0 +1,62 @@
+server:
+  port: 9001
+
+spring:
+  application:
+    name: snail-gateway
+  main:
+    web-application-type: reactive
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.8.12:10000
+        namespace: public
+        group: DEFAULT_GROUP
+        username: nacos
+        password: nacos
+        metadata:
+          env: dev
+      config:
+        enabled: false
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+          routes:
+            - id: snail-auth
+              uri: lb://snail-auth
+              predicates:
+                - Path=/auth/**
+              filters:
+                - StripPrefix=1
+            - id: snail-authorization
+              uri: lb://snail-authorization
+              predicates:
+                - Path=/authorization/**
+              filters:
+                - StripPrefix=1
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowedHeaders: "*"
+                allowedOriginPatterns: "*"
+                allowCredentials: true
+                allowedMethods:
+                  - GET
+                  - POST
+                  - DELETE
+                  - PUT
+                  - OPTION
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9000
+          jwk-set-uri: http://localhost:9000/oauth2/jwks
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haiyinlong.snail.authentication.infrastructure.dao.UserDao">
+
+
+    <select id="existsByUsername" resultType="java.lang.Boolean">
+        select exists(select 1 from user where username = #{username})
+    </select>
+    <select id="getByUsername"
+            resultType="UserEntity">
+        select *
+        from user
+        where username = #{username}
+    </select>
+</mapper>
