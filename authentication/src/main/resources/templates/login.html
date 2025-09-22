@@ -2,8 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>自定义登录 - 认证中心</title>
+    <title>系统登录 - 认证中心</title>
     <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
     <link rel="apple-touch-icon" sizes="180x180"
           th:href="@{/images/apple-touch-icon.png}">
@@ -12,100 +13,201 @@
     <link rel="icon" type="image/png" sizes="16x16"
           th:href="@{/images/favicon-16x16.png}">
     <link rel="manifest" th:href="@{/images/site.webmanifest}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" th:href="@{/css/fonts.css}"/>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            padding: 40px;
-            background-color: #f5f5f5;
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
         }
 
-        .form-container {
-            max-width: 400px;
-            margin: 0 auto;
+        .card {
             background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
-        .form-title {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        input {
+        .input-field {
             display: block;
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.375rem;
             box-sizing: border-box;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         }
 
-        button {
+        .input-field:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn-primary {
             width: 100%;
-            padding: 12px;
-            background: #007bff;
+            padding: 0.625rem 1rem;
+            background: #3b82f6;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 0.375rem;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.15s ease-in-out;
         }
 
-        button:hover {
-            background: #0056b3;
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .btn-link {
+            color: #3b82f6;
+            text-decoration: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            font-size: 0.875rem;
+        }
+
+        .btn-link:hover {
+            text-decoration: underline;
         }
 
         .error-message {
-            color: #dc3545;
-            margin-top: 10px;
+            color: #ef4444;
+            margin-top: 0.5rem;
             text-align: center;
+            font-size: 0.875rem;
         }
 
-        .login-link {
+        .separator {
+            display: flex;
+            align-items: center;
             text-align: center;
-            margin-top: 15px;
+            color: #64748b;
+            font-size: 0.875rem;
         }
 
-        .login-link a {
-            color: #007bff;
-            text-decoration: none;
+        .separator::before,
+        .separator::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #cbd5e1;
+        }
+
+        .separator::before {
+            margin-right: 0.5rem;
+        }
+
+        .separator::after {
+            margin-left: 0.5rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
         }
     </style>
 </head>
 <body>
-<div class="form-container">
-    <h3 class="form-title">系统登录</h3>
-    <!-- 注意：action="/login" 是 Spring Security 默认处理路径 -->
-    <form th:action="@{/login}" method="post">
-        <div class="form-group">
-            <input type="text" name="username" placeholder="用户名" required
-                   autofocus/>
+<div class="w-full h-screen lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+    <div class="relative hidden bg-muted lg:block">
+        <img
+                th:src="@{/images/placeholder.jpg}"
+                alt="Image"
+                width="1920"
+                height="1080"
+                class="h-full w-full object-cover dark:brightness-[0.3] dark:grayscale absolute left-0 top-0"
+        >
+        <div class="absolute z-10 left-8 top-8">
+            <div class="logo-container">
+                <img th:src="@{/images/logo.png}" src="/images/logo.png"
+                     alt="Logo" width="32" height="32">
+                <span>Authentication Center</span>
+            </div>
         </div>
-        <div class="form-group">
-            <input type="password" name="password" placeholder="密码" required/>
-        </div>
-        <div class="form-group">
-            <button type="submit">登录</button>
-        </div>
+    </div>
 
-        <!-- 错误提示 -->
-        <div th:if="${param.error}" class="error-message">
-            <p>用户名或密码错误，请重新输入</p>
+    <div class="flex items-center justify-center py-12">
+        <div class="mx-auto grid w-[350px] gap-6">
+            <div class="card w-full max-w-sm">
+                <div class="p-6 space-y-4">
+                    <div>
+                        <h2 class="text-2xl font-bold">Login</h2>
+                        <p class="text-sm text-gray-500 mt-1">
+                            Enter your username and password below to log into
+                            your
+                            account.
+                        </p>
+                    </div>
+
+                    <form th:action="@{/login}" method="post">
+                        <div class="space-y-4">
+                            <div class="space-y-2">
+                                <label for="username"
+                                       class="text-sm font-medium">
+                                    Username
+                                </label>
+                                <input
+                                        id="username"
+                                        name="username"
+                                        type="text"
+                                        placeholder="m@example.com"
+                                        required
+                                        class="input-field"
+                                />
+                            </div>
+
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <label for="password"
+                                           class="text-sm font-medium">
+                                        Password
+                                    </label>
+                                    <button type="button" class="btn-link"
+                                            onclick="window.location.href='/forgot-password'">
+                                        Forgot password?
+                                    </button>
+                                </div>
+                                <input
+                                        id="password"
+                                        name="password"
+                                        type="password"
+                                        required
+                                        placeholder="*********"
+                                        class="input-field"
+                                />
+                            </div>
+
+                            <!-- 错误提示 -->
+                            <div th:if="${param.error}" class="error-message">
+                                <p>用户名或密码错误，请重新输入</p>
+                            </div>
+
+                            <button type="submit" class="btn-primary">
+                                Login
+                            </button>
+
+                            <!-- CSRF保护 -->
+                            <input type="hidden" name="_csrf"
+                                   th:value="${_csrf.token}"/>
+                        </div>
+                    </form>
+
+
+                    <p class="text-xs text-center text-gray-500">
+                        By clicking login, you agree to our
+                        <button class="btn-link">Terms of Service</button>
+                        and
+                        <button class="btn-link">Privacy Policy</button>
+                    </p>
+                </div>
+            </div>
         </div>
-
-        <!-- CSRF保护 -->
-        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-    </form>
-
-    <div class="login-link">
-        <p><a href="#">忘记密码？</a></p>
     </div>
 </div>
 </body>

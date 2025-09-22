@@ -17,7 +17,8 @@ public class SecurityConfig {
             .requestMatchers("/oauth2/jwks").permitAll().requestMatchers("/oauth2/.well-known/**").permitAll()
             // 登录和错误页面
             .requestMatchers("/login", "/error", "/connect/logout").permitAll()
-            .requestMatchers("/assets/**", "/css/**", "/js/**", "/images/**", "/favicon.ico", "/default-ui.css")
+            .requestMatchers("/assets/**", "/css/**", "/fonts/**", "/js/**", "/images/**", "/favicon.ico",
+                "/default-ui.css")
             .permitAll()
             // 其他所有请求需要认证
             .anyRequest().authenticated()).oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> {
