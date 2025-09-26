@@ -18,7 +18,9 @@ public class SecurityConfig {
         http.authorizeExchange(auth -> auth
             .pathMatchers("/auth/oauth2/authorize", "/auth/oauth2/token", "/auth/login", "/auth/error",
                 "/auth/connect/logout")
-            .permitAll().pathMatchers("/actuator/**").permitAll().anyExchange().authenticated())
+            .permitAll().pathMatchers("/actuator/**").permitAll()
+            // 获取token
+            .pathMatchers("/authorization/client/token").permitAll().anyExchange().authenticated())
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> {
             }));
         return http.build();

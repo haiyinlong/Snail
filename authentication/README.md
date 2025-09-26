@@ -28,6 +28,17 @@ keytool -genkeypair \
 
 > 注意要替换掉 snail-auth-server-dev.jks 文件，不可以放在开源项目中。
 
+### 客户认证地址
+
+```text
+http://192.168.5.228:9001/auth/oauth2/authorize?client_id=4fef8b86-b712-49bc-8e21-86abfb048a7d&response_type=code&scope=openid profile&redirect_uri=http://localhost:5173/login
+```
+
+1. 浏览器打开认证地址，会跳转到授权页面，点击授权按钮，会返回授权码。
+2. 获取授权码后，可以通过授权码获取token（header 中添加Authorization Basic ，
+   拼接 "
+   client_id:client_secret" 的UTF-8 Base64 编码）。
+
 ### 退出登录
 
 通过调用`connect/logout` 接口退出登录,携带`id_token_hint`参数 和

@@ -13,7 +13,7 @@ spring:
     oauth2:
       authorizationserver:
         # 从网关访问到的具体地址
-        issuer: http://192.168.5.228:9001/auth
+        issuer: http://192.168.5.228:9000
         jks:
           path: snail-auth-server-dev.jks
           # 支持环境变量覆盖  export JKS_PASSWORD=your-production-password
