@@ -92,6 +92,7 @@ export const useAuthStore = defineStore('user', () => {
       })
       token.value = tokenResponseData.access_token
       localStorage.setItem('auth_token', tokenResponseData.access_token)
+      localStorage.setItem('id_token', tokenResponseData.id_token)
       return tokenResponseData.access_token
     } catch (error) {
       console.error('获取token失败:', error)
@@ -142,6 +143,21 @@ const getUserInfo = async () => {
     }
   }
 
+    // oidc登出
+  const oidcLogout = () => {
+    isLogin.value = false
+    user.value = null
+    token.value = ''
+    // 清除 localStorage
+    localStorage.removeItem('auth_token')
+    localStorage.removeItem('user_info')
+    const id_token_hint = localStorage.getItem('id_token')
+    const logoutRedirectUrl =env.VITE_OAUTH_LOGOUT_REDIRECT_URI
+    const encodedRedirectUri = encodeURIComponent(logoutRedirectUrl)
+    const oidcLogoutUrl = `${env.VITE_OAUTH_API_URL}${env.VITE_OAUTH_LOGOUT_API_PREFIX}?post_logout_redirect_uri=${encodedRedirectUri}&id_token_hint=${id_token_hint}`
+    window.location.href = oidcLogoutUrl
+  }
+
   // 检查是否已登录
   const checkAuth = () => {
     return isLogin.value && token.value
@@ -159,6 +175,7 @@ const getUserInfo = async () => {
     oidcToken,
     getUserInfo,
     logout,
+    oidcLogout,
     checkAuth,
   }
 })

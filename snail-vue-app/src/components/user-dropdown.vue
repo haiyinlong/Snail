@@ -17,9 +17,7 @@ import {
 } from '@/components/ui/tooltip'
 
 // 使用认证 store 获取用户信息
-const { user, logout } = useAuth()
-console.log(user)
-
+const { user, oidcLogout } = useAuth()
 // 如果没有用户信息，显示默认信息
 const currentUser = computed(() => {
   return {
@@ -127,7 +125,7 @@ onUnmounted(() => {
       </UiDropdownMenuGroup>
 
       <UiDropdownMenuSeparator />
-      <UiDropdownMenuItem @click="logout">
+      <UiDropdownMenuItem @click="oidcLogout">
         <LogOut />
         {{ $t('common.logout') }}
       </UiDropdownMenuItem>

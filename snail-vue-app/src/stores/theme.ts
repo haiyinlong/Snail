@@ -22,7 +22,7 @@ export const useThemeStore = defineStore('system-config', () => {
   function setRadius(newRadius: Radius) {
     radius.value = newRadius
   }
-  const theme = ref<Theme>('zinc')
+  const theme = ref<Theme>('blue')
   function setTheme(newTheme: Theme) {
     theme.value = newTheme
   }

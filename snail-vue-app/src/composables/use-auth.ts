@@ -13,6 +13,7 @@ export function useAuth() {
     logout: authStore.logout,
     // 使用 store 的 login 方法
     login: authStore.login,
+    oidcLogout: authStore.oidcLogout,
     // 暴露其他 store 的状态和方法
     isLogin: authStore.isLogin,
     user: authStore.user,

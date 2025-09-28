@@ -17,6 +17,8 @@ const EnvSchema = z.object({
   VITE_OAUTH_API_PREFIX: z.string(),
   VITE_OAUTH_CLIENT_ID: z.string(),
   VITE_OAUTH_REDIRECT_URI: z.string().url(),
+  VITE_OAUTH_LOGOUT_API_PREFIX: z.string(),
+  VITE_OAUTH_LOGOUT_REDIRECT_URI: z.string().url(),
 })
 
 export type env = z.infer<typeof EnvSchema>
