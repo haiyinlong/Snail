@@ -1,15 +1,19 @@
-<!-- 设置主题使用那种布局样式 -->
-<!-- <script setup lang="ts">
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import AppSidebar from "@/components/AppSidebar.vue";
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+
+import Loading from '@/components/loading.vue'
+
+const router = useRouter()
+router.push({ name: '/dashboard/' })
 </script>
 
 <template>
-    <SidebarProvider>
-        <AppSidebar />
-        <main>
-            <SidebarTrigger />
-            <slot />
-        </main>
-    </SidebarProvider>
-</template> -->
+  <div class="flex items-center justify-center w-screen h-screen">
+    <Loading />
+  </div>
+</template>
+
+<route lang="yaml">
+  meta:
+    layout: false
+</route>

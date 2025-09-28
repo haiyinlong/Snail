@@ -1,13 +1,17 @@
 <script lang="ts" setup>
-import type { DrawerTitleProps } from "vaul-vue"
-import type { HTMLAttributes } from "vue"
-import { reactiveOmit } from "@vueuse/core"
-import { DrawerTitle } from "vaul-vue"
-import { cn } from "@/lib/utils"
+import type { DrawerTitleProps } from 'vaul-vue'
+import type { HtmlHTMLAttributes } from 'vue'
+import { DrawerTitle } from 'vaul-vue'
+import { computed } from 'vue'
+import { cn } from '@/lib/utils'
 
-const props = defineProps<DrawerTitleProps & { class?: HTMLAttributes["class"] }>()
+const props = defineProps<DrawerTitleProps & { class?: HtmlHTMLAttributes['class'] }>()
 
-const delegatedProps = reactiveOmit(props, "class")
+const delegatedProps = computed(() => {
+  const { class: _, ...delegated } = props
+
+  return delegated
+})
 </script>
 
 <template>

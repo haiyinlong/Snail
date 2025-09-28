@@ -1,9 +1,10 @@
 import type { Ref } from 'vue'
 import type * as z from 'zod'
+import type { Dependency, EnumValues } from './interface'
 import { createContext } from 'reka-ui'
 import { useFieldValue, useFormValues } from 'vee-validate'
 import { computed, ref, watch } from 'vue'
-import { type Dependency, DependencyType, type EnumValues } from './interface'
+import { DependencyType } from './interface'
 import { getFromPath, getIndexIfArray } from './utils'
 
 export const [injectDependencies, provideDependencies] = createContext<Ref<Dependency<z.infer<z.ZodObject<any>>>[] | undefined>>('AutoFormDependencies')
@@ -32,11 +33,11 @@ export default function useDependencies(
   function getSourceValue(dep: Dependency<any>) {
     const source = dep.sourceField as string
     const index = getIndexIfArray(fieldName) ?? -1
-    const [sourceLast, ...sourceInitial] = source.split('.').toReversed()
-    const [_targetLast, ...targetInitial] = (dep.targetField as string).split('.').toReversed()
+    const [sourceLast, ...sourceInitial] = source.split('.').reverse()
+    const [_targetLast, ...targetInitial] = (dep.targetField as string).split('.').reverse()
 
     if (index >= 0 && sourceInitial.join(',') === targetInitial.join(',')) {
-      const [_currentLast, ...currentInitial] = fieldName.split('.').toReversed()
+      const [_currentLast, ...currentInitial] = fieldName.split('.').reverse()
       return getFromPath(form.value, currentInitial.join('.') + sourceLast)
     }
 

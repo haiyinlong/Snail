@@ -1,21 +1,32 @@
 <script setup lang="ts">
-import AppSidebar from '@/components/AppSidebar.vue'
-import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar'
-import DarkMode from '@/components/DarkMode.vue'
+import { onMounted } from 'vue'
+
+import Loading from '@/components/loading.vue'
+import { Toaster } from '@/components/ui/sonner'
+import { THEMES, useThemeStore } from '@/stores/theme'
+
+// 初始化主题
+const themeStore = useThemeStore()
+
+onMounted(() => {
+  // 确保页面加载时应用保存的主题
+  const savedTheme = themeStore.theme
+  document.documentElement.classList.remove(...THEMES.map(theme => `theme-${theme}`))
+  document.documentElement.classList.add(`theme-${savedTheme}`)
+})
 </script>
 
 <template>
-  <SidebarProvider>
-    <AppSidebar />
-    <SidebarInset>
-      <header class="flex sticky top-0 bg-background h-12 shrink-0 items-center gap-2 border-b px-4">
-        <SidebarTrigger class="-ml-1" />
-        <div class="h-4 border-l border-border "></div>
-        <DarkMode class="-ml-1" />
-      </header>
-      <main class="flex-1 p-4">
-        <RouterView />
-      </main>
-    </SidebarInset>
-  </SidebarProvider>
+  <div class="h-screen min-h-0">
+    <Toaster />
+    <Suspense>
+      <router-view v-slot="{ Component }">
+        <component :is="Component" />
+      </router-view>
+
+      <template #fallback>
+        <Loading />
+      </template>
+    </Suspense>
+  </div>
 </template>

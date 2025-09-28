@@ -1,29 +1,14 @@
-// 配置路由信息
-import { createRouter, createWebHistory} from 'vue-router';
-import { createRouterGuard } from './guard'
+import { setupLayouts } from 'virtual:generated-layouts'
+import { createWebHashHistory } from 'vue-router'
+import { createRouter } from 'vue-router/auto'
+import { handleHotUpdate, routes } from 'vue-router/auto-routes'
 
-// 改为动态导入
-var routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: () => import('@/pages/dashboard/index.vue'),
-  },
-  {
-    path: '/user',
-    name: 'User',
-    component: () => import('@/pages/user/index.vue'),
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: () => import('@/pages/login/index.vue'),
-  },
-];
+import { createRouterGuard } from './guard'
+import publicRoutes from './public-routes'
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes,
+  history: createWebHashHistory(),
+  routes: [...setupLayouts(routes), ...publicRoutes],
 
   scrollBehavior() {
     return { left: 0, top: 0, behavior: 'smooth' }
@@ -33,3 +18,7 @@ const router = createRouter({
 createRouterGuard(router)
 
 export default router
+
+if (import.meta.hot) {
+  handleHotUpdate(router)
+}
