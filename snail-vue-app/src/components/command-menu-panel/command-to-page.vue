@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useSidebar } from '@/composables/use-sidebar'
+import { useMenuStore } from '@/stores/menu'
+
 
 import type { NavGroup, NavItem } from '../app-sidebar/types'
 
@@ -9,7 +10,8 @@ const emit = defineEmits<{
   (e: 'click'): void
 }>()
 
-const { navData } = useSidebar()
+const menuStore = useMenuStore()
+const navData = menuStore.sidebarData?.navMain
 
 function getFlatNavItems(navData: NavGroup[]): NavItem[] {
   const flatItems: NavItem[] = []
@@ -26,7 +28,7 @@ function getFlatNavItems(navData: NavGroup[]): NavItem[] {
   return flatItems
 }
 
-const commands = getFlatNavItems(navData.value!)
+const commands = getFlatNavItems(navData!)
 
 const router = useRouter()
 const route = useRoute()
@@ -40,16 +42,11 @@ function commandItemClick(url: string) {
 
 <template>
   <UiCommandGroup :heading="$t('common.pages')">
-    <UiCommandItem
-      v-for="command in commands"
-      :key="command.title"
-      :value="command.title"
-      @click="commandItemClick(command.url!)"
-    >
+    <UiCommandItem v-for="command in commands" :key="command.title" :value="command.title"
+      @click="commandItemClick(command.url!)">
       <CommandItemHasIcon :name="command.title" :icon="command.icon" />
     </UiCommandItem>
   </UiCommandGroup>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

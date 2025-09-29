@@ -4,18 +4,18 @@ import { ref } from 'vue'
 import { parseQuery } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth'
-// import { useMenuStore } from '@/stores/menu'
+import { useMenuStore } from '@/stores/menu'
 
 
 const authStore = useAuthStore()
-// const menuStore = useMenuStore()
+const menuStore = useMenuStore()
 const query = ref(parseQuery(location.search))
 const code = query.value.code
 if (code && typeof code === 'string') {
   // 获取token
   await authStore.oidcToken(code)
   await authStore.getUserInfo()
-  // await menuStore.getUserMenus()
+  await menuStore.getUserMenus()
   window.location.href = '/'
 }
 else {
