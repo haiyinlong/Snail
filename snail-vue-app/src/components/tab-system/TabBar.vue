@@ -75,24 +75,23 @@ const activeTabIndex = computed(() => {
 </script>
 
 <template>
-  <div class="border-b bg-background shrink-0">
+  <div class="border-b bg-background border-0 shrink-0">
     <div class="flex items-center">
-      <!-- 标签滚动区域 -->
       <ScrollArea class="flex-1 whitespace-nowrap">
         <div class="flex space-x-1 p-1">
           <div v-for="tab in tabs" :key="tab.id" :class="cn(
-            'group relative flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground cursor-pointer',
+            'group relative flex items-center justify-center px-4 py-2 text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground cursor-pointer',
             activeTab === tab.id
               ? 'bg-accent text-accent-foreground'
               : 'text-muted-foreground'
           )" @click="handleTabClick(tab.id)">
-            <!-- 文字始终居中显示 -->
             <span class="truncate text-center">{{ tab.title }}</span>
 
-            <!-- 删除按钮：绝对定位在右上角 -->
-            <Button v-if="isTabClosable(tab)" variant="ghost" size="sm"
-              class="absolute -top-1 -right-1 h-5 w-5 p-0 opacity-0 group-hover:opacity-100 transition-opacity rounded-full bg-muted/80 hover:bg-muted text-muted-foreground"
-              @click="handleCloseTab(tab.id, $event)">
+            <Button v-if="isTabClosable(tab)" variant="ghost" size="sm" :class="cn('absolute -top-1 -right-1 h-5 w-5 p-0 rounded-full hover:bg-muted text-muted-foreground',
+              activeTab === tab.id
+                ? 'bg-accent text-accent-foreground'
+                : 'text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity'
+            )" @click="handleCloseTab(tab.id, $event)">
               <X class="h-3 w-3" />
               <span class="sr-only">{{ t('common.closeTab') }}</span>
             </Button>

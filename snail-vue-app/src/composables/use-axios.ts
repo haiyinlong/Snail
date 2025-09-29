@@ -13,7 +13,6 @@ export function useAxios() {
  axiosInstance.interceptors.request.use(
     (config) => {
       const token = localStorage.getItem('auth_token')
-      console.warn('token', token)
       if (token) {
         config.headers.Authorization = `Bearer ${token}`
       }

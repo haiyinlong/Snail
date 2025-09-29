@@ -9,7 +9,7 @@ interface getUserInfoResponse {
   realName: string
   email: string
 }
-export function useUserInfoMutation() {
+export function useMenusMutation() {
   const { axiosInstance } = useAxios()
   return useMutation<getUserInfoResponse,AxiosError>({
     mutationKey: ['userInfo'],

@@ -102,32 +102,31 @@ export const useAuthStore = defineStore('user', () => {
   }
 
   // oidc获取userInfo
-const getUserInfo = async () => {
-  loading.value = true;
-  const userInfoMutation = useUserInfoMutation();
-  return new Promise<void>((resolve, reject) => {
-    userInfoMutation.mutate(undefined, {
-      onSuccess: (data) => {
-        loading.value = false;
-        const userData: User = {
-          id: data.userId,
-          name: data.realName,
-          email: '', 
-          avatar: 'placeholder.png',
-        };
-        user.value = userData;
-        localStorage.setItem('user_info', JSON.stringify(userData));
-        resolve();
-        window.location.href = '/'
-      },
-      onError: (error) => {
-        loading.value = false;
-        console.error('获取用户信息失败:', error);
-        reject(error);
-      }
+  const getUserInfo = async () => {
+    loading.value = true;
+    const userInfoMutation = useUserInfoMutation();
+    return new Promise<void>((resolve, reject) => {
+      userInfoMutation.mutate(undefined, {
+        onSuccess: (data) => {
+          loading.value = false;
+          const userData: User = {
+            id: data.userId,
+            name: data.realName,
+            email: data.email, 
+            avatar: 'placeholder.png',
+          };
+          user.value = userData;
+          localStorage.setItem('user_info', JSON.stringify(userData));
+          resolve();
+        },
+        onError: (error) => {
+          loading.value = false;
+          console.error('获取用户信息失败:', error);
+          reject(error);
+        }
+      });
     });
-  });
-};
+  };
 
   // 登出
   const logout = () => {

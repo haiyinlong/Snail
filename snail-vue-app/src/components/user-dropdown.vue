@@ -91,22 +91,22 @@ onUnmounted(() => {
           </div>
         </div>
       </UiDropdownMenuLabel>
-
+      <!-- 
       <UiDropdownMenuSeparator />
       <UiDropdownMenuGroup>
         <UiDropdownMenuItem @click="$router.push('/billing/')">
           <Sparkles />
           {{ $t('common.upgradeToPro') }}
         </UiDropdownMenuItem>
-      </UiDropdownMenuGroup>
-
+      </UiDropdownMenuGroup> -->
+      <!-- 
       <UiDropdownMenuSeparator />
       <UiDropdownMenuGroup>
         <UiDropdownMenuItem @click="$router.push('/billing?type=billing')">
           <CreditCard />
           {{ $t('common.billing') }}
         </UiDropdownMenuItem>
-      </UiDropdownMenuGroup>
+      </UiDropdownMenuGroup> -->
 
       <UiDropdownMenuSeparator />
       <UiDropdownMenuGroup>

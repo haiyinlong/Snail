@@ -11,7 +11,7 @@ const activeLinkClass = "text-foreground"
 
 <template>
     <nav :class="cn('flex items-center space-x-4 lg:space-x-6', $attrs.class ?? '')">
-        <router-link 
+        <!-- <router-link 
             to="/dashboard" 
             :class="navLinkClass"
             :active-class="activeLinkClass"
@@ -42,6 +42,6 @@ const activeLinkClass = "text-foreground"
             :exact-active-class="activeLinkClass"
         >
             {{ t('common.settings') }}
-        </router-link>
+        </router-link> -->
     </nav>
 </template>
