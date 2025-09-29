@@ -7,6 +7,7 @@ import { setupNProgress } from './nprogress'
 import { setupPinia } from './pinia'
 import { setupTanstackVueQuery } from './tanstack-vue-query'
 import { setupTheme } from './theme'
+import permission from './permission'
 
 export function setupPlugins(app: App) {
   setupDayjs()
@@ -16,4 +17,5 @@ export function setupPlugins(app: App) {
   setupI18n(app)
   setupPinia(app)
   setupTheme()
+  app.directive('permission', permission)
 }

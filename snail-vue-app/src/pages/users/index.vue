@@ -16,8 +16,12 @@ defineOptions({
 <template>
   <Page :title="$t('common.users')" :description="$t('common.usersDescription')">
     <template #actions>
-      <UserInvite />
-      <UserCreate />
+      <div v-permission="'user.add'">
+        <UserInvite />
+      </div>
+      <div v-permission="'user.create'">
+        <UserCreate />
+      </div>
     </template>
     <div class="overflow-x-auto">
       <DataTable :data="users" :columns="columns" />
