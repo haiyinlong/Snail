@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { useMenusMutation } from '@/services/api/menus.api'
 import type { SidebarData, Team } from '@/components/app-sidebar/types'
+import type { MenuBarData, NavMainData } from '@/types/nav-menu'
 import {
   AudioWaveform,
   Command,
@@ -50,31 +51,44 @@ export const useMenuStore = defineStore('menu', () => {
     'BadgeHelp': BadgeHelp
   }
 
-  // Transform navMain data recursively
   const transformNavMain = (navItems: any[]) => {
     return navItems.map(item => {
       const transformedItem = { ...item }
       
-      // Convert icon string to component if exists
       if (item.icon && iconMap[item.icon as keyof typeof iconMap]) {
         transformedItem.icon = iconMap[item.icon as keyof typeof iconMap]
       }
       
-      // Recursively transform nested items
       if (item.items) {
         transformedItem.items = transformNavMain(item.items)
       }
-      
       return transformedItem
     })
   }
 
+  const transformMenuBarData = (mavMenuBarData: NavMainData[]) => {
+    const menuBarData:MenuBarData[] = []
+
+    mavMenuBarData.map(item => {      
+      if (item.url) {
+        menuBarData.push({ title: item.title, url: item.url })
+      }
+      
+      const transformedItem: NavMainData = { ...item } as NavMainData
+
+      if (transformedItem.items) {
+        const itemMenuBarData = transformMenuBarData(transformedItem.items)
+        menuBarData.push(...itemMenuBarData)
+      }
+    })
+    return menuBarData
+  }
   const getUserMenus = async () => {
     loading.value = true
     try {
       const menusMutation = useMenusMutation()
       const response = await menusMutation.mutateAsync()
-      
+
       const transformedTeams = response.teams?.map(team => ({
         ...team,
         logo: iconMap[team.logo as keyof typeof iconMap] || GalleryVerticalEnd
@@ -82,7 +96,10 @@ export const useMenuStore = defineStore('menu', () => {
       
       // Transform navMain data with icon conversion
       const transformedNavMain = response.navMain ? transformNavMain(response.navMain) : []
-      
+      // 转化 面包屑bar MenuBarData
+      const menuBarData = transformMenuBarData(response.navMain)
+      localStorage.setItem('menuBarData', JSON.stringify(menuBarData))
+
       sidebarData.value = {
         user: {
           name: 'shadcn',
@@ -92,7 +109,6 @@ export const useMenuStore = defineStore('menu', () => {
         teams: transformedTeams,
         navMain: transformedNavMain
       }
-      console.log('sidebarData:', sidebarData.value)
       return response
     } catch (error) {
       console.error('Failed to fetch menu data:', error)

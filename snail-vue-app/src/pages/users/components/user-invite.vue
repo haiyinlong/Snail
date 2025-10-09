@@ -49,33 +49,25 @@ function onSubmit(values: Record<string, any>) {
 
 <template>
   <UseTemplate>
-    <AutoForm
-      v-auto-animate
-      class="w-full space-y-6"
-      :schema="schema"
-      :field-config="{
-        email: {
-          label: 'Email address',
-          inputProps: {
-            type: 'email',
-          },
+    <AutoForm v-auto-animate class="w-full space-y-6" :schema="schema" :field-config="{
+      email: {
+        label: 'Email address',
+        inputProps: {
+          type: 'email',
         },
-        role: {
-          label: 'Role',
-          component: 'select',
-        },
-        description: {
-          label: 'Description(Optional)',
-          component: 'textarea',
-        },
-      }"
-      @submit="onSubmit"
-    >
-      <div
-        :class="cn(
-          'flex items-center ',
-        )"
-      >
+      },
+      role: {
+        label: 'Role',
+        component: 'select',
+      },
+      description: {
+        label: 'Description(Optional)',
+        component: 'textarea',
+      },
+    }" @submit="onSubmit">
+      <div :class="cn(
+        'flex items-center ',
+      )">
         <Button type="submit" class="w-full">
           Invite
           <Send />
@@ -100,7 +92,8 @@ function onSubmit(values: Record<string, any>) {
           </div>
         </DialogTitle>
         <DialogDescription>
-          Invite new user to join your team by sending them an email invitation. Assign a role to define their access level.
+          Invite new user to join your team by sending them an email invitation. Assign a role to define their access
+          level.
         </DialogDescription>
       </DialogHeader>
       <GridForm />
@@ -123,7 +116,8 @@ function onSubmit(values: Record<string, any>) {
           </div>
         </DrawerTitle>
         <DrawerDescription>
-          Invite new user to join your team by sending them an email invitation. Assign a role to define their access level.
+          Invite new user to join your team by sending them an email invitation. Assign a role to define their access
+          level.
         </DrawerDescription>
       </DrawerHeader>
 
@@ -140,5 +134,4 @@ function onSubmit(values: Record<string, any>) {
   </Drawer>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

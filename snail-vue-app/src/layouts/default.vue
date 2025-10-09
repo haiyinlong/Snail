@@ -10,6 +10,7 @@ import MainNav from '@/components/main-nav.vue'
 import TabManager from '@/components/tab-system/TabManager.vue'
 import ToggleTheme from '@/components/toggle-theme.vue'
 import UserDropdown from '@/components/user-dropdown.vue'
+import BreadcrumbBar from '@/components/breadcrumb-bar.vue'
 
 const defaultOpen = useCookies(['sidebar:state'])
 </script>
@@ -22,6 +23,7 @@ const defaultOpen = useCookies(['sidebar:state'])
       <header class="flex items-center gap-3 sm:gap-4 h-16 p-4 shrink-0 min-h-0 transition-[width,height] ease-linear">
         <UiSidebarTrigger class="-ml-1" />
         <UiSeparator orientation="vertical" class="h-2" />
+        <BreadcrumbBar />
         <MainNav />
         <div class="ml-auto flex items-center space-x-2">
           <CommandMenuPanel />

@@ -29,7 +29,7 @@ export function useTokenMutation() {
   return useMutation<getTokenResponse, AxiosError, getTokenRequest>({
     mutationKey: ['token'],
     mutationFn: async (data: getTokenRequest) => {
-      const response = await axiosInstance.get<baseResponse>(`/authorization/client/token?code=${data.code}&state=${data.state}&redirectUri=${data.redirectUri}&clientId=${data.clientId}`)
+      const response = await axiosInstance.get<baseResponse>(`/resource/client/token?code=${data.code}&state=${data.state}&redirectUri=${data.redirectUri}&clientId=${data.clientId}`)
       return response.data.data
     },
   })

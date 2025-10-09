@@ -12,8 +12,10 @@ const menuStore = useMenuStore()
 const query = ref(parseQuery(location.search))
 const code = query.value.code
 if (code && typeof code === 'string') {
-  // 获取token
+  //   // 获取token
+  console.log('获取token', code)
   await authStore.oidcToken(code)
+  console.log('获取用户信息')
   await authStore.getUserInfo()
   await menuStore.getUserMenus()
   window.location.href = '/'

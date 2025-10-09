@@ -3,19 +3,7 @@ import type { AxiosError } from 'axios'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 
 import { useAxios } from '@/composables/use-axios'
-
-interface TeamData {
-  name: string;
-  logo: string; // 使用字符串类型而不是组件对象
-  plan: string;
-}
-
-interface NavMainData {
-  title: string;
-  url?: string;
-  icon?: string; // 使用字符串类型而不是组件对象
-  items: (NavMainData | { title: string; url: string })[];
-}
+import type { TeamData, NavMainData } from '@/types/nav-menu'
 
 interface getUserMenuResponse {
   teams: TeamData[]
@@ -26,6 +14,7 @@ export function useMenusMutation() {
   return useMutation<getUserMenuResponse,AxiosError>({
     mutationKey: ['userMenu'],
     mutationFn: async () => {
+      // TODO 注意菜单都是要返回url参数，并且要配置国际化
       // const response = await axiosInstance.get<getUserMenuResponse>(`/authorization/menus`)
       // return response.data
        return new Promise((resolve) => {
@@ -115,6 +104,7 @@ export function useMenusMutation() {
               },
               {
                 title: 'common.settings',
+                url: '/settings',
                 items: [
                   {
                     title: 'common.account',

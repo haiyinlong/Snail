@@ -98,6 +98,7 @@
     }
   },
   "common": {
+    "home": "首页",
     "dashboard": "仪表板",
     "tasks": "任务",
     "users": "用户",
