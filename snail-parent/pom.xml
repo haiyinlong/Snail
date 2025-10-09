@@ -19,6 +19,7 @@
         <module>nacos-spring-boot-starter</module>
         <module>../gateway</module>
         <module>../authorization</module>
+        <module>../resource</module>
     </modules>
 
     <properties>

@@ -31,6 +31,7 @@ public class CustomOidcUserInfoMapper {
         UserAggregate user = userRepository.getById(Long.parseLong(userId));
 
         if (user != null) {
+            // TODO 返回权限permissions
             return OidcUserInfo.builder().subject(userId).name(user.getRealName()).email(user.getEmail())
                 .claim("userId", user.getId().toString()).claim("realName", user.getRealName())
                 .claim("deptId", user.getDepartmentId()).claim("dept", user.getDepartmentName()).build();

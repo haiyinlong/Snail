@@ -20,7 +20,7 @@ public class SecurityConfig {
                 "/auth/connect/logout")
             .permitAll().pathMatchers("/actuator/**").permitAll()
             // 获取token
-            .pathMatchers("/authorization/client/token").permitAll().anyExchange().authenticated())
+            .pathMatchers("/resource/client/token").permitAll().anyExchange().authenticated())
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> {
             }));
         return http.build();

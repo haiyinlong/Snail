@@ -37,6 +37,12 @@ spring:
                 - Path=/authorization/**
               filters:
                 - StripPrefix=1
+            - id: snail-resource
+              uri: lb://snail-resource
+              predicates:
+                - Path=/resource/**
+              filters:
+                - StripPrefix=1
           globalcors:
             cors-configurations:
               '[/**]':
