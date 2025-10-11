@@ -4,18 +4,14 @@ import Error from '@/components/custom-error.vue'
 
 <template>
   <div class="flex items-center justify-center h-screen">
-    <Error
-      :code="503"
-      subtitle="Service Unavailable"
-      error="The server is currently unable to handle the request due to a temporary overloading or maintenance of the server."
-    />
+    <Error :code="503" subtitle="Service Unavailable"
+      error="The server is currently unable to handle the request due to a temporary overloading or maintenance of the server." />
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
 
 <route lang="yaml">
   meta:
-    layout: blank
+    layout: inside
   </route>

@@ -115,7 +115,7 @@ export const useAuthStore = defineStore('user', () => {
             name: data.realName,
             email: data.email, 
             avatar: 'placeholder.png',
-            permissions: ['user.add'],
+            permissions: ['user.add','user.create'],
           };
           user.value = userData;
           localStorage.setItem('user_info', JSON.stringify(userData));

@@ -9,7 +9,7 @@ import com.haiyinlong.snail.authentication.application.user.ChangePasswordServic
 import com.haiyinlong.snail.authentication.application.user.CreateUserService;
 import com.haiyinlong.snail.authentication.application.user.dto.CreateUserRequest;
 import com.haiyinlong.snail.authentication.application.user.dto.UpdatePasswordRequest;
-import com.haiyinlong.snail.authentication.infrastructure.dto.ResponseDto;
+import com.haiyinlong.snail.common.dto.ResponseDto;
 
 import lombok.RequiredArgsConstructor;
 

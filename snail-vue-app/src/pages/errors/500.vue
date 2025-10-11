@@ -4,18 +4,14 @@ import Error from '@/components/custom-error.vue'
 
 <template>
   <div class="flex items-center justify-center h-screen">
-    <Error
-      :code="500"
-      subtitle="Internal Server Error"
-      error="The server encountered an unexpected condition which prevented it from fulfilling the request."
-    />
+    <Error :code="500" subtitle="Internal Server Error"
+      error="The server encountered an unexpected condition which prevented it from fulfilling the request." />
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
 
 <route lang="yaml">
   meta:
-    layout: blank
+    layout: inside
   </route>

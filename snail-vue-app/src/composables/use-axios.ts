@@ -25,6 +25,14 @@ export function useAxios() {
 
   axiosInstance.interceptors.response.use(
     (response) => {
+      if (response.data?.code == 401) {
+        localStorage.removeItem('auth_token')
+        localStorage.removeItem('user_info')
+        window.location.href = '/errors/401'
+      }
+      if (response.data?.code == 200) {
+        return response.data
+      }
       return response
     },
     (error: AxiosError) => {

@@ -43,20 +43,14 @@ function onSubmit(values: Record<string, any>) {
 </script>
 
 <template>
-  <AutoForm
-    v-auto-animate
-    class="max-h-[500px] overflow-y-auto"
-    :schema="formSchema"
-    :field-config="{
-      email: {
-        label: $t('common.emailAddress'),
-        inputProps: {
-          type: 'email',
-        },
+  <AutoForm v-auto-animate :schema="formSchema" :field-config="{
+    email: {
+      label: $t('common.emailAddress'),
+      inputProps: {
+        type: 'email',
       },
-    }"
-    @submit="onSubmit"
-  >
+    },
+  }" @submit="onSubmit">
     <div class="flex items-center justify-end mt-2 space-x-2">
       <UiButton type="submit" class="w-full">
         {{ $t('common.saveChanges') }}
@@ -65,6 +59,4 @@ function onSubmit(values: Record<string, any>) {
   </AutoForm>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.haiyinlong.snail.authentication.domain.exception.BusinessException;
-import com.haiyinlong.snail.authentication.infrastructure.dto.ResponseDto;
+import com.haiyinlong.snail.common.dto.ResponseDto;
 
 /**
  * GlobalExceptionHandler

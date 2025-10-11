@@ -1,4 +1,4 @@
-package com.haiyinlong.snail.authentication.infrastructure.dto;
+package com.haiyinlong.snail.common.dto;
 
 import lombok.Data;
 
@@ -10,13 +10,19 @@ import lombok.Data;
  **/
 @Data
 public class ResponseDto<T> {
-    private String code;
-    private String message;
+    private final String code;
+    private final String message;
     private T data;
 
     public ResponseDto(String code, String message) {
         this.code = code;
         this.message = message;
+    }
+
+    public ResponseDto(String code, String message, T data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
     }
 
     public static ResponseDto<Void> error(String invalidParameter, String message) {
@@ -25,5 +31,9 @@ public class ResponseDto<T> {
 
     public static ResponseDto<Void> success() {
         return new ResponseDto<>("200", "success");
+    }
+
+    public static <T> ResponseDto<T> success(T data) {
+        return new ResponseDto<>("200", "success", data);
     }
 }

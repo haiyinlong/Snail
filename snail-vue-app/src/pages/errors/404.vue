@@ -4,18 +4,13 @@ import Error from '@/components/custom-error.vue'
 
 <template>
   <div class="flex items-center justify-center h-screen">
-    <Error
-      :code="404"
-      :subtitle="$t('common.notFound')"
-      :error="$t('common.notFoundMessage')"
-    />
+    <Error :code="404" :subtitle="$t('common.notFound')" :error="$t('common.notFoundMessage')" />
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
 
 <route lang="yaml">
   meta:
-    layout: blank
+    layout: inside
   </route>

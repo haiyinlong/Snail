@@ -5,7 +5,9 @@ import { RadioGroupRoot, useForwardPropsEmits } from 'reka-ui'
 import { computed } from 'vue'
 import { cn } from '@/lib/utils'
 
-const props = defineProps<RadioGroupRootProps & { class?: HTMLAttributes['class'] }>()
+const props = defineProps<RadioGroupRootProps & {
+  class?: HTMLAttributes['class']
+}>()
 const emits = defineEmits<RadioGroupRootEmits>()
 
 const delegatedProps = computed(() => {
@@ -18,11 +20,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
 
 <template>
-  <RadioGroupRoot
-    data-slot="radio-group"
-    :class="cn('grid gap-3', props.class)"
-    v-bind="forwarded"
-  >
+  <RadioGroupRoot data-slot="radio-group" :class="cn('grid gap-3', props.class)" v-bind="forwarded">
     <slot />
   </RadioGroupRoot>
 </template>
