@@ -3,6 +3,21 @@ Spring Boot 3 微服务脚手架, Spring Cloud OAuth2 认证, shadcn ui 后台�
 Java 快速开发框架, Spring Boot Admin 前后端分离, Nacos 配置中心, 
 微服务权限管理, JWT 登录, Spring Security 6, Vue3 管理系统 
 -->
+<p align="center">
+  <h3 align="center">Snail - 企业级微服务快速开发脚手架</h3>
+  <p align="center">
+    🚀 基于 Spring Boot 3 + Spring Cloud + OAuth2 + shadcn/ui
+  </p>
+  <p align="center">
+    <a href="#-快速开始">快速开始</a> •
+    <a href="#-文档">文档</a> •
+    <a href="#-贡献">贡献</a> •
+  </p>
+  <p align="center">
+    <img src="https://img.shields.io/github/stars/haiyinlong/snail?style=social" alt="GitHub Stars">
+    <img src="https://img.shields.io/github/forks/haiyinlong/snail?style=social" alt="GitHub Forks">
+  </p>
+</p>
 
 # 🐌 Snail - 轻量级 Spring Boot 快速开发脚手架
 
