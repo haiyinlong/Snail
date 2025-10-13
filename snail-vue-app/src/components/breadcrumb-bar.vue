@@ -3,11 +3,11 @@
         <BreadcrumbList>
             <BreadcrumbItem v-for="(item, index) in breadcrumbItems" :key="index">
                 <BreadcrumbLink v-if="index < breadcrumbItems.length - 1" :href="item.path">
-                    {{ t(item.label) }}
+                    {{ $t(item.label) }}
                 </BreadcrumbLink>
                 <BreadcrumbSeparator v-if="index < breadcrumbItems.length - 1" />
                 <BreadcrumbPage v-else>
-                    {{ t(item.label) }}
+                    {{ $t(item.label) }}
                 </BreadcrumbPage>
             </BreadcrumbItem>
         </BreadcrumbList>
@@ -15,7 +15,6 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -29,7 +28,6 @@ import { computed } from 'vue'
 import type { MenuBarData } from '@/types/nav-menu'
 
 const route = useRoute()
-const { t } = useI18n()
 
 const menus = localStorage.getItem('menuBarData') || ''
 const menuItems = JSON.parse(menus) as MenuBarData[]
@@ -47,20 +45,14 @@ const breadcrumbItems = computed(() => {
         path += '/' + segment
 
         const menuItem = menuItems.find(item => item.url === path)
-        const label = menuItem ? menuItem.title : formatSegment(segment)
-
-        breadcrumbs.push({
-            label: label,
-            path: path
-        })
+        if (menuItem) {
+            breadcrumbs.push({
+                label: menuItem.title,
+                path: path
+            })
+        }
     })
     return breadcrumbs
 })
 
-function formatSegment(segment: string): string {
-    return segment
-        .split('-')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ')
-}
 </script>

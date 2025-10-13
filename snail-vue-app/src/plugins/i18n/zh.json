@@ -295,5 +295,50 @@
   "login": "登录",
   "register": "注册",
   "language": "中文",
-  "changeLanguage": "语言切换"
+  "changeLanguage": "语言切换",
+  "system":{
+    "menu":{
+      "type":{
+        "group": "分组",
+        "directory": "目录",
+        "insideLink": "内部链接",
+        "outsideLink": "外部链接",
+        "button": "按钮"
+      },
+      "table":{
+        "name":"菜单名称",
+        "icon":"图标",
+        "url":"URL",
+        "description":"菜单描述",
+        "permission":"权限",
+        "type":"菜单类型"
+      },
+      "info":{
+        "title":"菜单管理",
+        "description":"新增、维护菜单项。"
+      },
+      "form":{
+        "title":{
+          "create":"创建菜单",
+          "createDescription":"创建新菜单项。",
+          "edit":"编辑菜单",
+          "editDescription":"编辑菜单 "
+        },
+        "name": "菜单名称",
+        "namePlaceholder": "请输入菜单名称",
+        "icon": "图标",
+        "iconPlaceholder": "清选择图标",
+        "url": "URL",
+        "urlPlaceholder": "请输入URL",
+        "parent": "父级菜单",
+        "parentPlaceholder": "请选择父级菜单",
+        "description": "菜单描述",
+        "descriptionPlaceholder": "请输入菜单描述",
+        "permission": "权限",
+        "permissionPlaceholder": "请输入权限码",
+        "type": "菜单类型",
+        "typePlaceholder": "请输入菜单类型"
+      }
+    }
+  }
 }

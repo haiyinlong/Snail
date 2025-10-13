@@ -6,6 +6,8 @@ logging:
     org.springframework.security: trace
     com.alibaba.druid: debug
 spring:
+  jackson:
+    default-property-inclusion: non_null
   application:
     name: snail-authorization
   # 使用druid数据源配置mysql

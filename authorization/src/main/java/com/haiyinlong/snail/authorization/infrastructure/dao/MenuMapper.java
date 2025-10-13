@@ -18,4 +18,6 @@ import com.haiyinlong.snail.authorization.infrastructure.dao.entity.MenuEntity;
 public interface MenuMapper extends BaseMapper<MenuEntity> {
 
     List<MenuEntity> queryMenuEntity(@Param("menuIds") List<Long> menuIds);
+
+    List<MenuEntity> queryAllMenu();
 }

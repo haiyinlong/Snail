@@ -41,4 +41,24 @@ public class MenuRepositoryImpl implements MenuRepository {
                 menuEntity.getUpdateTime()))
             .toList();
     }
+
+    @Override
+    public List<MenuAggregate> queryAllMenu() {
+        List<MenuEntity> menuEntityList = menuMapper.queryAllMenu();
+        return menuEntityList.stream()
+            .map(menuEntity -> MenuAggregate.of(menuEntity.getId(), menuEntity.getParentId(), menuEntity.getName(),
+                menuEntity.getUrl(), menuEntity.getPerms(), MenuTypeEnum.getDescByCode(menuEntity.getType()),
+                menuEntity.getIcon(), menuEntity.getOrderNum(), menuEntity.getDescription(), menuEntity.getCreateTime(),
+                menuEntity.getUpdateTime()))
+            .toList();
+    }
+
+    @Override
+    public MenuAggregate getMenu(Long menuId) {
+        MenuEntity menuEntity = menuMapper.selectById(menuId);
+        return MenuAggregate.of(menuEntity.getId(), menuEntity.getParentId(), menuEntity.getName(), menuEntity.getUrl(),
+            menuEntity.getPerms(), MenuTypeEnum.getDescByCode(menuEntity.getType()), menuEntity.getIcon(),
+            menuEntity.getOrderNum(), menuEntity.getDescription(), menuEntity.getCreateTime(),
+            menuEntity.getUpdateTime());
+    }
 }

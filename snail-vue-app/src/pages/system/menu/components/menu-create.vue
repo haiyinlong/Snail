@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Plus } from 'lucide-vue-next'
 
-import TaskResourceDialog from './task-resource-dialog.vue'
+import TaskResourceDialog from './menu-resource-dialog.vue'
 
 const isOpen = ref(false)
 </script>
@@ -16,7 +16,7 @@ const isOpen = ref(false)
     </UiDialogTrigger>
 
     <UiDialogContent>
-      <TaskResourceDialog :task="null" @close="isOpen = false" />
+      <TaskResourceDialog :menu="null" @close="isOpen = false" />
     </UiDialogContent>
   </UiDialog>
 </template>

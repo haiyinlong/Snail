@@ -4,39 +4,24 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import TabBar from './TabBar.vue'
 import type { TabItem } from './TabBar.vue'
+import type { MenuBarData } from '@/types/nav-menu'
 
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
 
+const menus = localStorage.getItem('menuBarData') || ''
+const menuItems = JSON.parse(menus) as MenuBarData[]
+
 // 防止循环触发的标志
 let isNavigating = false
-
-// 路由路径到组件名的映射
-const routeComponentMap: Record<string, string> = {
-  '/dashboard': 'DashboardPage',
-  '/tasks': 'TasksPage',
-  '/users': 'UsersPage',
-  '/settings': 'SettingsPage',
-  '/settings/account': 'SettingsAccountPage',
-  '/settings/appearance': 'SettingsAppearancePage',
-  '/settings/notifications': 'SettingsNotificationsPage',
-  '/settings/display': 'SettingsDisplayPage',
-  '/settings/profile': 'SettingsProfilePage',
-  '/apps': 'AppsPage',
-  '/ai-talk': 'AiTalkPage',
-  '/billing': 'BillingPage',
-  '/help-center': 'HelpCenterPage',
-  '/marketing': 'MarketingPage',
-  '/marketing/hello': 'MarketingHelloPage',
-}
 
 // 缓存管理
 const cachedComponents = ref<string[]>([])
 
 // 获取路由对应的组件名
 function getComponentName(path: string): string {
-  return routeComponentMap[path] || `Page_${generateTabId(path)}`
+  return `Page_${generateTabId(path)}`
 }
 
 // 缓存管理函数
@@ -74,25 +59,9 @@ function generateTabId(path: string): string {
 
 // 获取页面标题
 function getPageTitle(path: string): string {
-  const titleMap: Record<string, string> = {
-    '/tasks': t('common.tasks'),
-    '/users': t('common.users'),
-    '/settings': t('common.settings'),
-    '/settings/account': t('common.account'),
-    '/settings/appearance': t('common.appearance'),
-    '/settings/notifications': t('common.notifications'),
-    '/settings/display': t('common.display'),
-    '/settings/profile': t('common.profile'),
-    '/apps': t('common.apps'),
-    '/ai-talk': t('common.aiTalk'),
-    '/billing': t('common.billing'),
-    '/help-center': t('common.helpCenter'),
-    '/marketing': t('common.marketing'),
-    '/marketing/hello': t('common.welcome'),
-    '/example/vditor': t('common.vditor')
-  }
-
-  return titleMap[path] || t('common.newPage')
+  const menuItem = menuItems.find(item => item.url === path)
+  const label = menuItem ? t(menuItem.title) : t('common.newPage')
+  return label
 }
 
 // 创建仪表盘标签
@@ -130,20 +99,20 @@ function updateAllTabTitles() {
 function initializeTabs(): TabItem[] {
   const currentPath = route.path
   const tabs: TabItem[] = [createDashboardTab()]
-  
+
   // 如果当前路由不是仪表盘，添加当前路由标签
   if (currentPath !== '/dashboard') {
     const newTab = createNewTab(currentPath)
     tabs.push(newTab)
   }
-  
+
   return tabs
 }
 
 // 初始化活动标签
 function initializeActiveTab(tabsList: TabItem[]): string {
   const currentPath = route.path
-  
+
   // 使用当前路由对应的标签
   const currentTab = tabsList.find(tab => tab.path === currentPath)
   return currentTab ? currentTab.id : 'dashboard'
@@ -156,7 +125,7 @@ const activeTab = ref(initializeActiveTab(tabs.value))
 // 监听活动标签变化，更新路由
 watch(activeTab, (newActiveTab, oldActiveTab) => {
   console.log('活动标签变化:', oldActiveTab, '->', newActiveTab)
-  
+
   const tab = tabs.value.find(t => t.id === newActiveTab)
   if (tab && route.path !== tab.path) {
     console.log('路由跳转到:', tab.path)
@@ -174,7 +143,7 @@ watch(
     if (isNavigating) {
       return
     }
-
+    console.log('路由', route)
     console.log('路由从', oldPath, '变化到', newPath)
     console.log('当前标签列表:', tabs.value.map(t => ({ id: t.id, path: t.path, title: t.title })))
 
@@ -190,13 +159,13 @@ watch(
       console.log('创建新标签:', newTab)
       tabs.value.push(newTab)
       activeTab.value = newTab.id
-      
+
       // 添加到缓存
       if (newPath !== '/dashboard') {
         addToCache(newPath)
       }
     }
-    
+
     console.log('更新后的标签列表:', tabs.value.map(t => ({ id: t.id, path: t.path, title: t.title })))
   },
   { immediate: false }
@@ -216,12 +185,12 @@ function handleCloseTab(tabId: string) {
   if (tabIndex === -1) return
 
   const closedTab = tabs.value[tabIndex]
-  
+
   // 从缓存中移除
   if (closedTab.path !== '/dashboard') {
     removeFromCache(closedTab.path)
   }
-  
+
   // 移除标签
   tabs.value.splice(tabIndex, 1)
 
@@ -232,7 +201,7 @@ function handleCloseTab(tabId: string) {
       activeTab.value = nextTab.id
     }
   }
-  
+
   console.log('关闭标签:', closedTab.title)
 }
 
@@ -240,7 +209,7 @@ function handleCloseTab(tabId: string) {
 function closeAllTabs() {
   // 清空所有缓存
   cachedComponents.value = []
-  
+
   const dashboardTab = tabs.value.find(tab => tab.path === '/dashboard')
   tabs.value = dashboardTab ? [dashboardTab] : [createDashboardTab()]
   activeTab.value = 'dashboard'
@@ -254,19 +223,19 @@ function closeRightTabs(tabId: string) {
 
   // 保留当前标签及左侧标签，移除右侧标签
   const removedTabs = tabs.value.splice(tabIndex + 1)
-  
+
   // 从缓存中移除被关闭的标签
   removedTabs.forEach(tab => {
     if (tab.path !== '/dashboard') {
       removeFromCache(tab.path)
     }
   })
-  
+
   // 如果当前活动标签被关闭，切换到最后一个标签
   if (!tabs.value.find(tab => tab.id === activeTab.value)) {
     activeTab.value = tabs.value[tabs.value.length - 1]?.id || 'dashboard'
   }
-  
+
   console.log('关闭右侧标签:', removedTabs.map(t => t.title))
 }
 
@@ -278,13 +247,13 @@ function closeOtherTabs(tabId: string) {
   // 保留目标标签和仪表盘标签
   const dashboardTab = tabs.value.find(tab => tab.path === '/dashboard')
   const tabsToKeep: TabItem[] = []
-  
+
   if (dashboardTab && targetTab.id !== 'dashboard') {
     tabsToKeep.push(dashboardTab, targetTab)
   } else {
     tabsToKeep.push(targetTab)
   }
-  
+
   // 从缓存中移除不保留的标签
   const tabsToRemove = tabs.value.filter(tab => !tabsToKeep.includes(tab))
   tabsToRemove.forEach(tab => {
@@ -292,10 +261,10 @@ function closeOtherTabs(tabId: string) {
       removeFromCache(tab.path)
     }
   })
-  
+
   tabs.value = tabsToKeep
   activeTab.value = tabId
-  
+
   console.log('关闭其他标签，保留:', tabsToKeep.map(t => t.title))
 }
 
@@ -313,24 +282,24 @@ function handleRefreshTab(tabId: string) {
 // 组件挂载时确保仪表盘标签存在
 onMounted(async () => {
   await nextTick()
-  
+
   const dashboardTab = tabs.value.find(tab => tab.path === '/dashboard')
   if (!dashboardTab) {
     tabs.value.unshift(createDashboardTab())
   }
-  
+
   // 确保当前活动标签是正确的
   const currentPath = route.path
   const currentTabForPath = tabs.value.find(tab => tab.path === currentPath)
   if (currentTabForPath && activeTab.value !== currentTabForPath.id) {
     activeTab.value = currentTabForPath.id
   }
-  
+
   // 初始化缓存
   if (currentPath !== '/dashboard') {
     addToCache(currentPath)
   }
-  
+
   console.log('TabManager 已挂载，当前标签:', tabs.value.map(t => ({ id: t.id, path: t.path, title: t.title })))
   console.log('当前活动标签:', activeTab.value)
   console.log('初始缓存列表:', cachedComponents.value)
@@ -344,8 +313,9 @@ onUnmounted(() => {
 
 <template>
   <div class="flex flex-col h-full min-h-0">
-    <TabBar class="pl-2 pr-2 pb-1" :tabs="tabs" :active-tab="activeTab" @update:active-tab="activeTab = $event" @close-tab="handleCloseTab"
-      @close-all="closeAllTabs" @close-right="closeRightTabs" @close-other="closeOtherTabs" @refresh-tab="handleRefreshTab" />
+    <TabBar class="pl-2 pr-2 pb-1" :tabs="tabs" :active-tab="activeTab" @update:active-tab="activeTab = $event"
+      @close-tab="handleCloseTab" @close-all="closeAllTabs" @close-right="closeRightTabs" @close-other="closeOtherTabs"
+      @refresh-tab="handleRefreshTab" />
     <div class="flex-1 overflow-hidden min-h-0 p-1">
       <!-- 使用 keep-alive 缓存页面组件 -->
       <keep-alive :include="cachedComponents">

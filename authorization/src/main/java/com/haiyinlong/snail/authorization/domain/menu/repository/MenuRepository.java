@@ -17,4 +17,8 @@ public interface MenuRepository {
     void save(MenuAggregate menu);
 
     List<MenuAggregate> queryMenuPermissionByMenuIds(@Param("menuIds") List<Long> menuIds);
+
+    List<MenuAggregate> queryAllMenu();
+
+    MenuAggregate getMenu(@Param("menuId") Long menuId);
 }

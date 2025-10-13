@@ -295,5 +295,51 @@
   "login": "Login",
   "register": "Register",
   "language": "English",
-  "changeLanguage": "Change Language"
+  "changeLanguage": "Change Language",
+  "system": {
+   "menu": {
+      "type":{
+        "group": "Group",
+        "directory": "Directory",
+        "insideLink": "InsideLink",
+        "outsideLink": "OutsideLink",
+        "button": "Button"
+      },
+      "table":{
+        "name":" Menu Name",
+        "icon":" Icon",
+        "url":"URL",
+        "description":" Menu Description",
+        "permission":" Permission",
+        "type":" Menu Type"
+      },
+      "info":{
+        "title":" Menu Management",
+        "description":" Add and maintain menu items."
+      },
+      "form":{
+        "title":{
+        "create":" Create Menu",
+        "createDescription":" Create a new menu item." ,
+        "edit":" Edit Menu",
+        "editDescription":" Edit Menu "
+        },
+        "name": "Name",
+        "namePlaceholder": "Please enter the menu name",
+        "icon": "Icon",
+        "iconPlaceholder": "select icon",
+        "url": "URL",
+        "urlPlaceholder": "Please enter the URL",
+        "parent": "Parent Menu",
+        "parentPlaceholder": "Please select the parent menu",
+        "description": "Description",
+        "descriptionPlaceholder": "Please enter the menu description",
+        "permission": "Permission",
+        "permissionPlaceholder": "Please enter the permission code",
+        "type": "Type",
+        "typePlaceholder": "Please enter the menu type"
+      }
+    }
+  }
+  
 }

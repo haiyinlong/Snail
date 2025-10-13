@@ -34,4 +34,10 @@
             #{item}
         </foreach>
     </select>
+    <select id="queryAllMenu"
+            resultType="com.haiyinlong.snail.authorization.infrastructure.dao.entity.MenuEntity">
+        select
+        <include refid="Base_Column_List" />
+        from menu
+    </select>
 </mapper>

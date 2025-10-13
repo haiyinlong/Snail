@@ -1,13 +1,39 @@
 import { z } from 'zod'
 
-// We're keeping a simple non-relational schema here.
-// IRL, you will have a schema for your data models.
-export const taskSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  status: z.string(),
-  label: z.string(),
-  priority: z.string(),
+// Step 1: 先声明一个类型（可以是 let 或 let + as const）
+let menuSchema: z.ZodType<Menu>
+
+// Step 2: 定义接口（用于 z.infer）
+export interface Menu {
+  id: number
+  name: string
+  url?: string
+  perms?: string
+  type: number
+  icon?: string
+  orderNum?: number
+  description?: string
+  createTime?: string
+  updateTime?: string
+  parentId: number
+  children?: Menu[] | undefined// 可选的子菜单
+}
+
+// Step 3: 定义 schema，使用 z.lazy 指向尚未完全定义的 menuSchema
+menuSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  url: z.string(),
+  perms: z.string(),
+  type: z.number(),
+  icon: z.string(),
+  orderNum: z.number(),
+  description: z.string(),
+  createTime: z.string(),
+  updateTime: z.string(),
+  parentId: z.number(),
+  children: z.array(z.lazy(() => menuSchema)).optional(),
 })
 
-export type Task = z.infer<typeof taskSchema>
+// Step 4: 导出 schema
+export { menuSchema }

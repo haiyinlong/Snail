@@ -10,11 +10,6 @@ interface getTokenRequest {
   code: string
   state: string
 }
-interface baseResponse {
-  code: number
-  data: getTokenResponse
-  message: string
-}
 interface getTokenResponse {
   access_token: string
   refresh_token: string
@@ -29,8 +24,8 @@ export function useTokenMutation() {
   return useMutation<getTokenResponse, AxiosError, getTokenRequest>({
     mutationKey: ['token'],
     mutationFn: async (data: getTokenRequest) => {
-      const response = await axiosInstance.get<baseResponse>(`/resource/client/token?code=${data.code}&state=${data.state}&redirectUri=${data.redirectUri}&clientId=${data.clientId}`)
-      return response.data.data
+      const response = await axiosInstance.get<getTokenResponse>(`/resource/client/token?code=${data.code}&state=${data.state}&redirectUri=${data.redirectUri}&clientId=${data.clientId}`)
+      return response.data
     },
   })
 }

@@ -1,62 +1,23 @@
 // src/stores/menu.ts
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { useMenusMutation } from '@/services/api/menus.api'
+import { useUserMenuQuery } from '@/services/api/menus.api'
 import type { SidebarData, Team } from '@/components/app-sidebar/types'
 import type { MenuBarData, NavMainData } from '@/types/nav-menu'
-import {
-  AudioWaveform,
-  Command,
-  GalleryVerticalEnd,
-  // Add more icons for navMain
-  LayoutDashboard,
-  ListTodo,
-  Boxes,
-  Users,
-  Podcast,
-  SquareUserRound,
-  Bug,
-  FileText,
-  User,
-  Palette,
-  BellDot,
-  CreditCard,
-  BadgeHelp
-} from 'lucide-vue-next'
-
+import { useIconStore } from '@/stores/icon'
 export const useMenuStore = defineStore('menu', () => {
   // 状态
   const loading = ref(false)
   const sidebarData = ref<SidebarData>()
 
-  // Icon mapping for converting string identifiers to components
-  const iconMap = {
-    // Team icons
-    'GalleryVerticalEnd': GalleryVerticalEnd,
-    'AudioWaveform': AudioWaveform,
-    'Command': Command,
-    // NavMain icons
-    'LayoutDashboard': LayoutDashboard,
-    'ListTodo': ListTodo,
-    'Boxes': Boxes,
-    'Users': Users,
-    'Podcast': Podcast,
-    'SquareUserRound': SquareUserRound,
-    'Bug': Bug,
-    'FileText': FileText,
-    'User': User,
-    'Palette': Palette,
-    'BellDot': BellDot,
-    'CreditCard': CreditCard,
-    'BadgeHelp': BadgeHelp
-  }
+  const iconStore = useIconStore()
 
   const transformNavMain = (navItems: any[]) => {
     return navItems.map(item => {
       const transformedItem = { ...item }
       
-      if (item.icon && iconMap[item.icon as keyof typeof iconMap]) {
-        transformedItem.icon = iconMap[item.icon as keyof typeof iconMap]
+      if (iconStore.getIcon(item.icon)) {
+        transformedItem.icon = iconStore.getIcon(item.icon)
       }
       
       if (item.items) {
@@ -86,18 +47,22 @@ export const useMenuStore = defineStore('menu', () => {
   const getUserMenus = async () => {
     loading.value = true
     try {
-      const menusMutation = useMenusMutation()
-      const response = await menusMutation.mutateAsync()
+      const userMenuQueryResponse = useUserMenuQuery()
+      const response = await userMenuQueryResponse.refetch()
+      const transformedTeams: Team[] = response.data?.teams
+        ? response.data.teams.map(team => {
+            const logoIcon = iconStore.getIcon(team.logo)
+            return {
+              ...team,
+              logo: typeof logoIcon === 'string' 
+                ? iconStore.getDefaultIcon() 
+                : logoIcon
+            }
+          })
+        : []
 
-      const transformedTeams = response.teams?.map(team => ({
-        ...team,
-        logo: iconMap[team.logo as keyof typeof iconMap] || GalleryVerticalEnd
-      })) || []
-      
-      // Transform navMain data with icon conversion
-      const transformedNavMain = response.navMain ? transformNavMain(response.navMain) : []
-      // 转化 面包屑bar MenuBarData
-      const menuBarData = transformMenuBarData(response.navMain)
+      const transformedNavMain = response.data?.navMain ? transformNavMain(response.data.navMain) : []
+      const menuBarData = transformMenuBarData(response.data?.navMain ?? [])
       localStorage.setItem('menuBarData', JSON.stringify(menuBarData))
 
       sidebarData.value = {
@@ -109,7 +74,7 @@ export const useMenuStore = defineStore('menu', () => {
         teams: transformedTeams,
         navMain: transformedNavMain
       }
-      return response
+      return response.data
     } catch (error) {
       console.error('Failed to fetch menu data:', error)
       throw error

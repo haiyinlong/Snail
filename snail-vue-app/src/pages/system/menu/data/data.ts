@@ -1,72 +1,23 @@
-import {
-  ArrowDown,
-  ArrowRight,
-  ArrowUp,
-  Circle,
-  CircleCheck,
-  CircleHelp,
-  CirclePlus,
-  TimerOff,
-} from 'lucide-vue-next'
-import { h } from 'vue'
-
-export const labels = [
+export const menuType = [
   {
-    value: 'bug',
-    label: 'Bug',
-  },
-  {
-    value: 'feature',
-    label: 'Feature',
-  },
-  {
-    value: 'documentation',
-    label: 'Documentation',
-  },
-]
-
-export const statuses = [
-  {
-    value: 'backlog',
-    label: 'Backlog',
-    icon: h(CircleHelp),
-  },
-  {
-    value: 'todo',
-    label: 'Todo',
-    icon: h(Circle),
-  },
-  {
-    value: 'in progress',
-    label: 'In Progress',
-    icon: h(TimerOff),
-  },
-  {
-    value: 'done',
-    label: 'Done',
-    icon: h(CircleCheck),
-  },
-  {
-    value: 'canceled',
-    label: 'Canceled',
-    icon: h(CirclePlus),
-  },
-]
-
-export const priorities = [
-  {
-    value: 'low',
-    label: 'Low',
-    icon: h(ArrowDown),
-  },
-  {
-    value: 'medium',
-    label: 'Medium',
-    icon: h(ArrowRight),
-  },
-  {
-    value: 'high',
-    label: 'High',
-    icon: h(ArrowUp),
+    value: 0,
+    label: 'system.menu.type.group',
+    color: 'oklch(0.705 0.213 47.604)',
+  },{
+    value: 1,
+    label: 'system.menu.type.directory',
+    color: 'oklch(0.723 0.219 149.579)',
+  },{
+    value: 2,
+    label: 'system.menu.type.insideLink',
+    color: 'oklch(68.1% 0.162 75.834)',
+  },{
+    value: 3,
+    label: 'system.menu.type.outsideLink',
+    color: 'oklch(0.606 0.25 292.717)',
+  },{
+    value: 4,
+    label: 'system.menu.type.button',
+    color: 'oklch(48.8% 0.243 264.376)',
   },
 ]

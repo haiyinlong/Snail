@@ -4,22 +4,18 @@ import type { Component } from 'vue'
 
 import { Ellipsis, FilePenLine, Trash2 } from 'lucide-vue-next'
 
-import type { Task } from '../data/schema'
+import type { Menu } from '../data/schema'
 
-import { labels } from '../data/data'
-import { taskSchema } from '../data/schema'
+import { menuSchema } from '../data/schema'
 import TaskDelete from './task-delete.vue'
-import TaskResourceDialog from './task-resource-dialog.vue'
-import { DropdownMenuPortal } from "reka-ui"
+import TaskResourceDialog from './menu-resource-dialog.vue'
 
 const props = defineProps<DataTableRowActionsProps>()
 
 interface DataTableRowActionsProps {
-  row: Row<Task>
+  row: Row<Menu>
 }
-const task = computed(() => taskSchema.parse(props.row.original))
-
-const taskLabel = ref(task.value.label)
+const menu = computed(() => menuSchema.parse(props.row.original))
 
 const showComponent = shallowRef<Component | null>(null)
 
@@ -62,21 +58,6 @@ const isOpen = ref(false)
 
         <UiDropdownMenuSeparator />
 
-        <UiDropdownMenuSub>
-          <UiDropdownMenuSubTrigger>Labels</UiDropdownMenuSubTrigger>
-          <DropdownMenuPortal>
-            <UiDropdownMenuSubContent class="min-w-[120px] z-50" side="right" align="start">
-              <UiDropdownMenuRadioGroup v-model="taskLabel">
-                <UiDropdownMenuRadioItem v-for="label in labels" :key="label.value" :value="label.value">
-                  {{ label.label }}
-                </UiDropdownMenuRadioItem>
-              </UiDropdownMenuRadioGroup>
-            </UiDropdownMenuSubContent>
-          </DropdownMenuPortal>
-        </UiDropdownMenuSub>
-
-        <UiDropdownMenuSeparator />
-
         <UiDialogTrigger as-child>
           <UiDropdownMenuItem @select.stop="handleSelect('delete')">
             <span>Delete</span>
@@ -89,7 +70,7 @@ const isOpen = ref(false)
     </UiDropdownMenu>
 
     <UiDialogContent>
-      <component :is="showComponent" :task="task" @close="isOpen = false" />
+      <component :is="showComponent" :menu="menu" @close="isOpen = false" />
     </UiDialogContent>
   </UiDialog>
 </template>

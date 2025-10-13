@@ -1,81 +1,141 @@
 import type { ColumnDef } from '@tanstack/vue-table'
-
 import { h } from 'vue'
 
 import DataTableColumnHeader from '@/components/data-table/column-header.vue'
 import { SelectColumn } from '@/components/data-table/table-columns'
 import { Badge } from '@/components/ui/badge'
+import { ChevronDown, ChevronRight } from 'lucide-vue-next'
+import { useIconStore  } from '@/stores/icon'
 
-import type { Task } from '../data/schema'
-
-import { labels, priorities, statuses } from '../data/data'
+import {menuType} from '@/pages/system/menu/data/data.ts'
+import type { Menu } from '../data/schema'
 import DataTableRowActions from './data-table-row-actions.vue'
+import { useI18n } from 'vue-i18n'
 
-export const columns: ColumnDef<Task>[] = [
-  SelectColumn as ColumnDef<Task>,
+const iconStore = useIconStore()
+
+export const columns: ColumnDef<Menu>[] = [
+   SelectColumn as ColumnDef<Menu>,
   {
-    accessorKey: 'id',
-    header: ({ column }) => h(DataTableColumnHeader<Task>, { column, title: 'Task' }),
-    cell: ({ row }) => h('div', { class: 'w-20' }, row.getValue('id')),
+    id: 'select',
+    header: ({ table }) => h('div', {
+      class: 'flex items-center justify-center'
+    }, [
+      h('input', {
+        type: 'checkbox',
+        checked: table.getIsAllRowsSelected(),
+        'onUpdate:checked': (value: boolean) => table.toggleAllRowsSelected(!!value),
+        class: 'w-4 h-4 rounded border-gray-300'
+      })
+    ]),
+    cell: ({ row }) => h('div', {
+      class: 'flex items-center justify-center'
+    }, [
+      h('input', {
+        type: 'checkbox',
+        checked: row.getIsSelected(),
+        'onUpdate:checked': (value: boolean) => row.toggleSelected(!!value),
+        class: 'w-4 h-4 rounded border-gray-300 disabled:opacity-50'
+      })
+    ]),
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: 'title',
-    header: ({ column }) => h(DataTableColumnHeader<Task>, { column, title: 'Title' }),
-
+    accessorKey: 'name',
+    header: ({ column }) =>{
+      const { t } = useI18n()
+      return h(DataTableColumnHeader<Menu>, { column, title: t('system.menu.table.name') })
+    },
     cell: ({ row }) => {
-      const label = labels.find(label => label.value === row.original.label)
+      const canExpand = row.getCanExpand()
+      const isExpanded = row.getIsExpanded()
 
-      return h('div', { class: 'flex space-x-2' }, [
-        label ? h(Badge, { variant: 'outline' }, () => label.label) : null,
-        h('span', { class: 'max-w-[500px] truncate font-medium' }, row.getValue('title')),
+      return h('div', {
+        class: 'flex items-center max-w-[300px] truncate',
+        style: { paddingLeft: `${row.depth * 24 + 12}px` }
+      }, [
+        canExpand
+          ? h('button', {
+              class: 'mr-1 focus:outline-none',
+              onClick: () => row.toggleExpanded()
+            }, [
+              isExpanded
+                ? h(ChevronDown, { class: 'h-4 w-4' })
+                : h(ChevronRight, { class: 'h-4 w-4' })
+            ])
+          : h('div', { class: 'w-6' }), 
+        h('span', { class: 'truncate font-medium' }, row.getValue('name'))
       ])
     },
+    enableSorting: false,
+    enableHiding: false,
   },
   {
-    accessorKey: 'status',
-    header: ({ column }) => h(DataTableColumnHeader<Task>, { column, title: 'Status' }),
-
+    accessorKey: 'description',
+    header: ({ column }) => {
+      const { t } = useI18n()
+      return h(DataTableColumnHeader<Menu>, { column, title: t('system.menu.table.description') })
+    },
     cell: ({ row }) => {
-      const status = statuses.find(
-        status => status.value === row.getValue('status'),
-      )
-
-      if (!status)
-        return null
-
-      return h('div', { class: 'flex w-[100px] items-center' }, [
-        status.icon && h(status.icon, { class: 'mr-2 h-4 w-4 text-muted-foreground' }),
-        h('span', status.label),
-      ])
+      return  h('span', { class: 'max-w-[200px] truncate' }, row.getValue('description'))
     },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
-    },
+    enableSorting: false,
   },
   {
-    accessorKey: 'priority',
-    header: ({ column }) => h(DataTableColumnHeader<Task>, { column, title: 'Priority' }),
+    accessorKey: 'url',
+    header: ({ column }) =>  {
+      const { t } = useI18n()
+      return h(DataTableColumnHeader<Menu>, { column, title: t('system.menu.table.url') })
+    },
     cell: ({ row }) => {
-      const priority = priorities.find(
-        priority => priority.value === row.getValue('priority'),
-      )
-
-      if (!priority)
-        return null
-
-      return h('div', { class: 'flex items-center' }, [
-        priority.icon && h(priority.icon, { class: 'mr-2 h-4 w-4 text-muted-foreground' }),
-        h('span', {}, priority.label),
-      ])
+      return h('div', { class: 'max-w-[200px] truncate' }, row.getValue('url'))
     },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
+    enableSorting: false,
+  },
+{
+  accessorKey: 'perms',
+  header: ({ column }) => {
+      const { t } = useI18n()
+      return  h(DataTableColumnHeader<Menu>, { column, title: t('system.menu.table.permission') })
+  },
+  cell: ({ row }) => {
+    return h('span', { class: 'text-xs bg-accent px-2 py-1 rounded' }, String(row.getValue('perms')))
+  },
+  enableSorting: false,
+},
+ {
+    accessorKey: 'type',
+    header: ({ column }) =>  {
+      const { t } = useI18n()
+      return h(DataTableColumnHeader<Menu>, { column, title: t('system.menu.table.type') })
     },
+    cell: ({ row }) => {
+      const { t } = useI18n()
+      const menuTypeEnum =  menuType.find(item => item.value == row.original.type)
+              
+      return h('span', {}, menuTypeEnum ? h(Badge, {variant: "outline", style: { color: menuTypeEnum.color, borderColor: menuTypeEnum.color } }, () => t(menuTypeEnum?.label)) : '')
+    },
+    enableSorting: false,
+  },
+  {
+    accessorKey: 'icon',
+    header: ({ column }) => {
+      const { t } = useI18n()
+      return  h(DataTableColumnHeader<Menu>, { column, title: t('system.menu.table.icon') })
+    },
+    cell: ({ row }) => {
+      if(row.getValue('icon')){
+        return h('code', { class: 'text-xs'}, h(iconStore.getIcon(row.getValue('icon'))))
+      }
+      return h('code', { class: 'text-xs'}, '-')
+    },
+    enableSorting: false,
   },
   {
     id: 'actions',
-    cell: ({ row }) => h(DataTableRowActions, { row }),
+    cell: ({ row }) => {
+      return h(DataTableRowActions, { row })
+    },
   },
 ]
