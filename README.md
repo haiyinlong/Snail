@@ -1,6 +1,6 @@
 
 <div align="right">
-  <details>
+  <details open>
     <summary >🌐 Language</summary>
     <div>
       <div align="center">
@@ -28,6 +28,7 @@
       </div>
     </div>
   </details>
+
 </div>
 
 <!-- 
